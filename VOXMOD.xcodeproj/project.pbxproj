@@ -1,0 +1,697 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08FD9A606CDE8C8F82D0AFF4 /* VOXMODKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 88277397A31A6EEC464659F3 /* VOXMODKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		46642B01F64E7493FEC9A333 /* ToneAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* ToneAnalysis.swift */; };
+		6B3B2BCFB267CB30118DAA55 /* ToneAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014 /* ToneAnalysisService.swift */; };
+		826D2A7A87093FF41C0343F8 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E794F5107CC1212F0C10B /* KeyboardView.swift */; };
+		A10001 /* VOXMODApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001 /* VOXMODApp.swift */; };
+		A10002 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002 /* NavigationCoordinator.swift */; };
+		A10003 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* DesignSystem.swift */; };
+		A10004 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004 /* GlassCard.swift */; };
+		A10005 /* GlowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005 /* GlowButton.swift */; };
+		A10006 /* PulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006 /* PulseAnimation.swift */; };
+		A10007 /* RiskMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* RiskMeter.swift */; };
+		A10008 /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* WaveformView.swift */; };
+		A10009 /* InsightData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* InsightData.swift */; };
+		A10010 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* Message.swift */; };
+		A10011 /* ToneAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* ToneAnalysis.swift */; };
+		A10012 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* HapticService.swift */; };
+		A10013 /* InsightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* InsightService.swift */; };
+		A10014 /* ToneAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014 /* ToneAnalysisService.swift */; };
+		A10015 /* ComposerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015 /* ComposerViewModel.swift */; };
+		A10016 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016 /* DashboardViewModel.swift */; };
+		A10017 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017 /* OnboardingViewModel.swift */; };
+		A10018 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018 /* SettingsViewModel.swift */; };
+		A10019 /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* ComposerView.swift */; };
+		A10020 /* InterventionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020 /* InterventionAlertView.swift */; };
+		A10021 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021 /* DashboardView.swift */; };
+		A10022 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022 /* MainTabView.swift */; };
+		A10023 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* OnboardingView.swift */; };
+		A10024 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024 /* SettingsView.swift */; };
+		A10025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10025 /* Assets.xcassets */; };
+		B446CD7A84F7855E74E38A98 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04932B7DA5FDC89F287E754A /* StorageService.swift */; };
+		BEE289D5C242CF9795ADA03B /* WaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* WaveformView.swift */; };
+		C7BA0A0FE9EDB873E9E200E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA451CFE2D6F54134FBC93F3 /* Foundation.framework */; };
+		CA30ACAE58106C480869F55B /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04932B7DA5FDC89F287E754A /* StorageService.swift */; };
+		E69D9E0EF30B125B49E05A60 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF111157717553D937D2803F /* KeyboardViewController.swift */; };
+		F52E6454BEF9750BE98B527A /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* DesignSystem.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		888D222F69E352BF6C4B4A12 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F10000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 57A7FD51AF84BF2DB696BD02;
+			remoteInfo = VOXMODKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5F6F244F2729D6FDA39158D2 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				08FD9A606CDE8C8F82D0AFF4 /* VOXMODKeyboard.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04932B7DA5FDC89F287E754A /* StorageService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		4E6E794F5107CC1212F0C10B /* KeyboardView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		88277397A31A6EEC464659F3 /* VOXMODKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VOXMODKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		968FAAFFF2D6228F48EB4D20 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B10001 /* VOXMODApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VOXMODApp.swift; sourceTree = "<group>"; };
+		B10002 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
+		B10003 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		B10004 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
+		B10005 /* GlowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlowButton.swift; sourceTree = "<group>"; };
+		B10006 /* PulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseAnimation.swift; sourceTree = "<group>"; };
+		B10007 /* RiskMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiskMeter.swift; sourceTree = "<group>"; };
+		B10008 /* WaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveformView.swift; sourceTree = "<group>"; };
+		B10009 /* InsightData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightData.swift; sourceTree = "<group>"; };
+		B10010 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		B10011 /* ToneAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneAnalysis.swift; sourceTree = "<group>"; };
+		B10012 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		B10013 /* InsightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightService.swift; sourceTree = "<group>"; };
+		B10014 /* ToneAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneAnalysisService.swift; sourceTree = "<group>"; };
+		B10015 /* ComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewModel.swift; sourceTree = "<group>"; };
+		B10016 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		B10017 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B10018 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		B10019 /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
+		B10020 /* InterventionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterventionAlertView.swift; sourceTree = "<group>"; };
+		B10021 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		B10022 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		B10023 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B10024 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B10025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C10000 /* VOXMOD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOXMOD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA451CFE2D6F54134FBC93F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		EF111157717553D937D2803F /* KeyboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2951DA9CD7B8258A93051C1F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7BA0A0FE9EDB873E9E200E8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D10001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3085FCC045DD31EF4F1C710F /* VOXMODKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				EF111157717553D937D2803F /* KeyboardViewController.swift */,
+				4E6E794F5107CC1212F0C10B /* KeyboardView.swift */,
+				968FAAFFF2D6228F48EB4D20 /* Info.plist */,
+			);
+			name = VOXMODKeyboard;
+			path = VOXMODKeyboard;
+			sourceTree = "<group>";
+		};
+		7EF316AAD53AAC349DF484A6 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EA451CFE2D6F54134FBC93F3 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		E10000 = {
+			isa = PBXGroup;
+			children = (
+				E10001 /* VOXMOD */,
+				E10099 /* Products */,
+				3085FCC045DD31EF4F1C710F /* VOXMODKeyboard */,
+				F6ED042523ABDC90A1C65DA0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E10001 /* VOXMOD */ = {
+			isa = PBXGroup;
+			children = (
+				E10002 /* App */,
+				E10003 /* Design */,
+				E10006 /* Models */,
+				E10007 /* Services */,
+				E10008 /* ViewModels */,
+				E10009 /* Views */,
+				B10025 /* Assets.xcassets */,
+			);
+			path = VOXMOD;
+			sourceTree = "<group>";
+		};
+		E10002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B10001 /* VOXMODApp.swift */,
+				B10002 /* NavigationCoordinator.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E10003 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				B10003 /* DesignSystem.swift */,
+				E10004 /* Components */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		E10004 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B10004 /* GlassCard.swift */,
+				B10005 /* GlowButton.swift */,
+				B10006 /* PulseAnimation.swift */,
+				B10007 /* RiskMeter.swift */,
+				B10008 /* WaveformView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E10006 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10009 /* InsightData.swift */,
+				B10010 /* Message.swift */,
+				B10011 /* ToneAnalysis.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E10007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10012 /* HapticService.swift */,
+				B10013 /* InsightService.swift */,
+				B10014 /* ToneAnalysisService.swift */,
+				04932B7DA5FDC89F287E754A /* StorageService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E10008 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B10015 /* ComposerViewModel.swift */,
+				B10016 /* DashboardViewModel.swift */,
+				B10017 /* OnboardingViewModel.swift */,
+				B10018 /* SettingsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		E10009 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E10010 /* Composer */,
+				E10011 /* Dashboard */,
+				E10012 /* Main */,
+				E10013 /* Onboarding */,
+				E10014 /* Settings */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E10010 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				B10019 /* ComposerView.swift */,
+				B10020 /* InterventionAlertView.swift */,
+			);
+			path = Composer;
+			sourceTree = "<group>";
+		};
+		E10011 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				B10021 /* DashboardView.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		E10012 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				B10022 /* MainTabView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E10013 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B10023 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		E10014 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B10024 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		E10099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C10000 /* VOXMOD.app */,
+				88277397A31A6EEC464659F3 /* VOXMODKeyboard.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F6ED042523ABDC90A1C65DA0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7EF316AAD53AAC349DF484A6 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		57A7FD51AF84BF2DB696BD02 /* VOXMODKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1F541571B56C20E44BEA6475 /* Build configuration list for PBXNativeTarget "VOXMODKeyboard" */;
+			buildPhases = (
+				CBE16C297102D1DC2A4D9A2A /* Sources */,
+				2951DA9CD7B8258A93051C1F /* Frameworks */,
+				6D14A88BCA696F08D1405DDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VOXMODKeyboard;
+			productName = VOXMODKeyboard;
+			productReference = 88277397A31A6EEC464659F3 /* VOXMODKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		F10001 /* VOXMOD */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = G10003 /* Build configuration list for PBXNativeTarget "VOXMOD" */;
+			buildPhases = (
+				F10002 /* Sources */,
+				D10001 /* Frameworks */,
+				F10003 /* Resources */,
+				5F6F244F2729D6FDA39158D2 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9F619377E2CE6FB317A6B804 /* PBXTargetDependency */,
+			);
+			name = VOXMOD;
+			productName = VOXMOD;
+			productReference = C10000 /* VOXMOD.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F10000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					F10001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = G10001 /* Build configuration list for PBXProject "VOXMOD" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E10000;
+			productRefGroup = E10099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F10001 /* VOXMOD */,
+				57A7FD51AF84BF2DB696BD02 /* VOXMODKeyboard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6D14A88BCA696F08D1405DDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10025 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CBE16C297102D1DC2A4D9A2A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E69D9E0EF30B125B49E05A60 /* KeyboardViewController.swift in Sources */,
+				826D2A7A87093FF41C0343F8 /* KeyboardView.swift in Sources */,
+				F52E6454BEF9750BE98B527A /* DesignSystem.swift in Sources */,
+				BEE289D5C242CF9795ADA03B /* WaveformView.swift in Sources */,
+				46642B01F64E7493FEC9A333 /* ToneAnalysis.swift in Sources */,
+				6B3B2BCFB267CB30118DAA55 /* ToneAnalysisService.swift in Sources */,
+				CA30ACAE58106C480869F55B /* StorageService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F10002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001 /* VOXMODApp.swift in Sources */,
+				A10002 /* NavigationCoordinator.swift in Sources */,
+				A10003 /* DesignSystem.swift in Sources */,
+				A10004 /* GlassCard.swift in Sources */,
+				A10005 /* GlowButton.swift in Sources */,
+				A10006 /* PulseAnimation.swift in Sources */,
+				A10007 /* RiskMeter.swift in Sources */,
+				A10008 /* WaveformView.swift in Sources */,
+				A10009 /* InsightData.swift in Sources */,
+				A10010 /* Message.swift in Sources */,
+				A10011 /* ToneAnalysis.swift in Sources */,
+				A10012 /* HapticService.swift in Sources */,
+				A10013 /* InsightService.swift in Sources */,
+				A10014 /* ToneAnalysisService.swift in Sources */,
+				A10015 /* ComposerViewModel.swift in Sources */,
+				A10016 /* DashboardViewModel.swift in Sources */,
+				A10017 /* OnboardingViewModel.swift in Sources */,
+				A10018 /* SettingsViewModel.swift in Sources */,
+				A10019 /* ComposerView.swift in Sources */,
+				A10020 /* InterventionAlertView.swift in Sources */,
+				A10021 /* DashboardView.swift in Sources */,
+				A10022 /* MainTabView.swift in Sources */,
+				A10023 /* OnboardingView.swift in Sources */,
+				A10024 /* SettingsView.swift in Sources */,
+				B446CD7A84F7855E74E38A98 /* StorageService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9F619377E2CE6FB317A6B804 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = VOXMODKeyboard;
+			target = 57A7FD51AF84BF2DB696BD02 /* VOXMODKeyboard */;
+			targetProxy = 888D222F69E352BF6C4B4A12 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09384B26E28D58A815730F85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = VOXMODKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spazorlabs.VOXMOD.VOXMODKeyboard;
+				PRODUCT_NAME = VOXMODKeyboard;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C2F624A6697CA11897F88207 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = VOXMODKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spazorlabs.VOXMOD.VOXMODKeyboard;
+				PRODUCT_NAME = VOXMODKeyboard;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		G10010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		G10011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		G10020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VOXMOD;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spazorlabs.VOXMOD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		G10021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VOXMOD;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.spazorlabs.VOXMOD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1F541571B56C20E44BEA6475 /* Build configuration list for PBXNativeTarget "VOXMODKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2F624A6697CA11897F88207 /* Release */,
+				09384B26E28D58A815730F85 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		G10001 /* Build configuration list for PBXProject "VOXMOD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10010 /* Debug */,
+				G10011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		G10003 /* Build configuration list for PBXNativeTarget "VOXMOD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10020 /* Debug */,
+				G10021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F10000 /* Project object */;
+}
