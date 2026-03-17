@@ -23,7 +23,9 @@ struct JournalView: View {
                 } else {
                     ScrollView(showsIndicators: false) {
                         LazyVStack(spacing: VMSpacing.md) {
-                            ForEach(Array(groupedEvents.enumerated()), id: \.element.key) { index, group in
+                            let groups = groupedEvents
+                            ForEach(0..<groups.count, id: \.self) { index in
+                                let group = groups[index]
                                 Section {
                                     ForEach(group.value) { event in
                                         eventRow(event)

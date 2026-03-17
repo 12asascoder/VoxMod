@@ -9,11 +9,34 @@ final class SettingsViewModel: ObservableObject {
     
     private static let sharedDefaults = UserDefaults(suiteName: "group.com.spazorlabs.VOXMOD") ?? .standard
     
-    @AppStorage("analysisEnabled", store: sharedDefaults)    var analysisEnabled: Bool = true
-    @AppStorage("hapticFeedback", store: sharedDefaults)     var hapticFeedback: Bool = true
-    @AppStorage("notificationsOn", store: sharedDefaults)    var notificationsEnabled: Bool = true
-    @AppStorage("analysisSensitivity", store: sharedDefaults) var sensitivity: Double = 50
-    @AppStorage("hasCompletedOnboarding", store: sharedDefaults) var hasCompletedOnboarding: Bool = true
+    @Published var analysisEnabled: Bool {
+        didSet { Self.sharedDefaults.set(analysisEnabled, forKey: "analysisEnabled") }
+    }
+    
+    @Published var hapticFeedback: Bool {
+        didSet { Self.sharedDefaults.set(hapticFeedback, forKey: "hapticFeedback") }
+    }
+    
+    @Published var notificationsEnabled: Bool {
+        didSet { Self.sharedDefaults.set(notificationsEnabled, forKey: "notificationsOn") }
+    }
+    
+    @Published var sensitivity: Double {
+        didSet { Self.sharedDefaults.set(sensitivity, forKey: "analysisSensitivity") }
+    }
+    
+    @Published var hasCompletedOnboarding: Bool {
+        didSet { Self.sharedDefaults.set(hasCompletedOnboarding, forKey: "hasCompletedOnboarding") }
+    }
+    
+    init() {
+        let defaults = Self.sharedDefaults
+        self.analysisEnabled = defaults.object(forKey: "analysisEnabled") as? Bool ?? true
+        self.hapticFeedback = defaults.object(forKey: "hapticFeedback") as? Bool ?? true
+        self.notificationsEnabled = defaults.object(forKey: "notificationsOn") as? Bool ?? true
+        self.sensitivity = defaults.double(forKey: "analysisSensitivity") == 0 ? 50 : defaults.double(forKey: "analysisSensitivity")
+        self.hasCompletedOnboarding = defaults.bool(forKey: "hasCompletedOnboarding")
+    }
     
     /// Privacy trust badges displayed to the user.
     let privacyBadges: [(icon: String, title: String, subtitle: String)] = [

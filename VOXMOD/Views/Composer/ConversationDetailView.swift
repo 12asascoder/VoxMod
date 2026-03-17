@@ -24,12 +24,13 @@ struct ConversationDetailView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(spacing: VMSpacing.md) {
-                            ForEach(Array(conversation.messages.enumerated()), id: \.element.id) { index, message in
+                            ForEach(0..<conversation.messages.count, id: \.self) { index in
+                                let message = conversation.messages[index]
                                 chatBubble(for: message, index: index)
                             }
                             
                             // Sent messages from current session
-                            ForEach(Array(viewModel.sentMessages.enumerated()), id: \.element.id) { index, message in
+                            ForEach(viewModel.sentMessages) { message in
                                 sessionBubble(for: message)
                             }
                         }

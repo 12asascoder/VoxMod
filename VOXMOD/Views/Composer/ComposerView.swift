@@ -10,7 +10,7 @@ struct ComposerView: View {
     @State private var showConversations = true
     @State private var animateIn = false
     @State private var selectedConversation: ActiveConversation?
-    @State private var navigateToConversation = false
+    @State private var navigateToConversation: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -162,7 +162,8 @@ struct ComposerView: View {
             connectedAppsStrip
             
             // Active conversation cards
-            ForEach(Array(ActiveConversation.samples.enumerated()), id: \.element.id) { index, convo in
+            ForEach(0..<ActiveConversation.samples.count, id: \.self) { index in
+                let convo = ActiveConversation.samples[index]
                 conversationCard(convo, index: index)
                     .onTapGesture {
                         selectedConversation = convo
