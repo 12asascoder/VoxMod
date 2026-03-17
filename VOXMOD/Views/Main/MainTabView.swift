@@ -8,7 +8,6 @@ import SwiftUI
 struct MainTabView: View {
     
     @EnvironmentObject var coordinator: NavigationCoordinator
-    @State private var tabBarVisible = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -29,15 +28,12 @@ struct MainTabView: View {
             
             // Custom tab bar
             customTabBar
-                .offset(y: tabBarVisible ? 0 : 100)
+                .offset(y: coordinator.isTabBarVisible ? 0 : 120)
+                .animation(.spring(response: 0.5, dampingFraction: 0.8), value: coordinator.isTabBarVisible)
         }
         .onAppear {
             // Hide default tab bar
             UITabBar.appearance().isHidden = true
-            
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.8).delay(0.2)) {
-                tabBarVisible = true
-            }
         }
     }
     

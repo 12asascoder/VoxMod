@@ -113,77 +113,79 @@ struct InterventionAlertView: View {
     // MARK: - Risk Display
     
     private var riskDisplay: some View {
-        GlassCard {
-            HStack(spacing: VMSpacing.lg) {
-                // Risk score
-                VStack(spacing: VMSpacing.xs) {
-                    Text("\(Int(viewModel.riskScore))")
-                        .font(.system(size: 36, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
-                    
-                    Text("/100")
-                        .font(.vmCaption)
-                        .foregroundStyle(Color.vmTextSecondary)
-                }
-                
-                Divider()
-                    .frame(height: 50)
-                    .overlay(Color.white.opacity(0.1))
-                
-                // Tone details
-                VStack(alignment: .leading, spacing: VMSpacing.sm) {
-                    HStack(spacing: VMSpacing.xs) {
-                        Text(viewModel.dominantTone.emoji)
-                        Text("Detected Tone")
-                            .font(.vmCaptionSmall)
-                            .foregroundStyle(Color.vmTextTertiary)
+        VStack(spacing: VMSpacing.lg) {
+            GlassCard {
+                HStack(spacing: VMSpacing.lg) {
+                    // Risk score
+                    VStack(spacing: VMSpacing.xs) {
+                        Text("\(Int(viewModel.riskScore))")
+                            .font(.system(size: 36, weight: .bold, design: .rounded))
+                            .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
+                        
+                        Text("/100")
+                            .font(.vmCaption)
+                            .foregroundStyle(Color.vmTextSecondary)
                     }
                     
-                    Text(viewModel.dominantTone.rawValue)
-                        .font(.vmHeadline)
-                        .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
+                    Divider()
+                        .frame(height: 50)
+                        .overlay(Color.white.opacity(0.1))
                     
-                    Text("Recipient may feel defensive")
-                        .font(.vmCaptionSmall)
-                        .foregroundStyle(Color.vmTextSecondary)
-                }
-                
-                Spacer()
-            }
-        }
-        .opacity(showContent ? 1 : 0)
-        
-        // AI Insight Explanation
-        if let insight = viewModel.insightExplanation {
-            HStack(alignment: .top, spacing: VMSpacing.md) {
-                Image(systemName: "brain")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.vmIndigo)
-                    .padding(.top, 2)
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("AI INSIGHT")
-                        .font(.vmCaptionSmall)
-                        .foregroundStyle(Color.vmIndigo)
-                        .tracking(1.0)
+                    // Tone details
+                    VStack(alignment: .leading, spacing: VMSpacing.sm) {
+                        HStack(spacing: VMSpacing.xs) {
+                            Text(viewModel.dominantTone.emoji)
+                            Text("Detected Tone")
+                                .font(.vmCaptionSmall)
+                                .foregroundStyle(Color.vmTextTertiary)
+                        }
+                        
+                        Text(viewModel.dominantTone.rawValue)
+                            .font(.vmHeadline)
+                            .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
+                        
+                        Text("Recipient may feel defensive")
+                            .font(.vmCaptionSmall)
+                            .foregroundStyle(Color.vmTextSecondary)
+                    }
                     
-                    Text(insight)
-                        .font(.vmCallout)
-                        .foregroundStyle(Color.vmTextSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
                 }
             }
-            .padding(VMSpacing.md)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: VMRadius.md)
-                    .fill(Color.vmSurface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: VMRadius.md)
-                            .stroke(Color.white.opacity(0.05), lineWidth: 1)
-                    )
-            )
             .opacity(showContent ? 1 : 0)
+            
+            // AI Insight Explanation
+            if let insight = viewModel.insightExplanation {
+                HStack(alignment: .top, spacing: VMSpacing.md) {
+                    Image(systemName: "brain")
+                        .font(.system(size: 16))
+                        .foregroundStyle(Color.vmIndigo)
+                        .padding(.top, 2)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("AI INSIGHT")
+                            .font(.vmCaptionSmall)
+                            .foregroundStyle(Color.vmIndigo)
+                            .tracking(1.0)
+                        
+                        Text(insight)
+                            .font(.vmCallout)
+                            .foregroundStyle(Color.vmTextSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(VMSpacing.md)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: VMRadius.md)
+                        .fill(Color.vmSurface)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: VMRadius.md)
+                                .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                        )
+                )
+                .opacity(showContent ? 1 : 0)
+            }
         }
     }
     

@@ -51,41 +51,24 @@ final class ToneAnalysisService {
     /// Analyse the tone of the given text and return a ToneAnalysis result.
     /// Simulates a ~200ms on-device ML inference delay.
     func analyse(_ text: String) async -> ToneAnalysis {
-        // Simulate processing delay
-        try? await Task.sleep(nanoseconds: 200_000_000)
+        // Use the live AI backend
+        if let aiResult = await OpenAIService.shared.analyse(text: text) {
+            return ToneAnalysis(
+                riskScore: aiResult.riskScore,
+                dominantTone: Tone(rawValue: aiResult.dominantTone.lowercased()) ?? .calm,
+                suggestedRephrase: aiResult.suggestedRephrase,
+                insightExplanation: aiResult.insightExplanation,
+                sentimentBreakdown: sentimentBreakdown(risk: aiResult.riskScore)
+            )
+        }
         
-        let lowered = text.lowercased()
-        
-        // 1. Apple NaturalLanguage sentiment (-1.0 to 1.0)
-        let sentiment = sentimentScore(for: text)
-        
-        // 2. Keyword-based risk scoring
-        let keywordRisk = keywordRiskScore(for: lowered)
-        
-        // 3. Combine scores (weighted blend)
-        let sentimentRisk = max(0, (1.0 - sentiment) * 50) // sentiment -1→100, 1→0
-        let combinedRisk = min(100, (sentimentRisk * 0.4) + (keywordRisk * 0.6))
-        
-        // 4. Determine dominant tone
-        let tone = dominantTone(for: combinedRisk)
-        
-        // 5. Generate explanation
-        let explanation = generateInsight(for: lowered, tone: tone)
-        
-        // 6. Generate rephrase suggestion if risky
-        let rephrase = combinedRisk >= 40 ? suggestRephrase(for: text) : nil
-        
-        // 7. Sentiment breakdown
-        let breakdown = sentimentBreakdown(risk: combinedRisk)
-        
-        // Return analysis without automatically logging. 
-        // Logging should be handled intentionally by the caller when an action is taken.
+        // Fallback to minimal static analysis if AI completely fails
         return ToneAnalysis(
-            riskScore: combinedRisk,
-            dominantTone: tone,
-            suggestedRephrase: rephrase,
-            insightExplanation: explanation,
-            sentimentBreakdown: breakdown
+            riskScore: 0,
+            dominantTone: .calm,
+            suggestedRephrase: nil,
+            insightExplanation: nil,
+            sentimentBreakdown: .balanced
         )
     }
     

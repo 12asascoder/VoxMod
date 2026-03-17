@@ -11,6 +11,7 @@ struct ConversationDetailView: View {
     @StateObject private var viewModel = ComposerViewModel()
     @State private var animateIn = false
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     
     var body: some View {
         ZStack {
@@ -41,7 +42,7 @@ struct ConversationDetailView: View {
                 }
                 
                 // Tone insight bar
-                if viewModel.riskScore > 0 {
+                if !viewModel.messageText.isEmpty {
                     toneInsightBar
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
@@ -60,6 +61,12 @@ struct ConversationDetailView: View {
         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.showIntervention)
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.riskScore > 0)
         .navigationBarHidden(true)
+        .onAppear {
+            coordinator.isTabBarVisible = false
+        }
+        .onDisappear {
+            coordinator.isTabBarVisible = true
+        }
     }
     
     // MARK: - Header
@@ -258,40 +265,60 @@ struct ConversationDetailView: View {
     
     private var toneInsightBar: some View {
         HStack(spacing: VMSpacing.md) {
-            // Animated risk dot
-            ZStack {
-                Circle()
-                    .fill(Color.riskColor(for: viewModel.riskScore).opacity(0.2))
+            if viewModel.isAnalysing {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(.vmIndigo)
                     .frame(width: 28, height: 28)
                 
-                Circle()
-                    .fill(Color.riskColor(for: viewModel.riskScore))
-                    .frame(width: 10, height: 10)
-            }
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Live Tone Analysis")
+                Text("Analyzing tone...")
                     .font(.vmCaptionSmall)
                     .foregroundStyle(Color.vmTextTertiary)
-                    .tracking(0.5)
+            } else {
+                // Animated risk dot
+                ZStack {
+                    Circle()
+                        .fill(Color.riskColor(for: viewModel.riskScore).opacity(0.2))
+                        .frame(width: 28, height: 28)
+                    
+                    Circle()
+                        .fill(Color.riskColor(for: viewModel.riskScore))
+                        .frame(width: 10, height: 10)
+                }
                 
-                HStack(spacing: VMSpacing.sm) {
-                    Text(viewModel.dominantTone.emoji)
-                        .font(.system(size: 14))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(viewModel.riskScore < 25 ? "AI Verification" : "Live Tone Analysis")
+                        .font(.vmCaptionSmall)
+                        .foregroundStyle(Color.vmTextTertiary)
+                        .tracking(0.5)
                     
-                    Text(viewModel.dominantTone.rawValue)
-                        .font(.vmCallout)
-                        .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
-                    
-                    Text("• Risk \(Int(viewModel.riskScore))")
-                        .font(.vmCallout)
-                        .foregroundStyle(Color.vmTextSecondary)
+                    HStack(spacing: VMSpacing.sm) {
+                        if viewModel.riskScore < 25 {
+                            Image(systemName: "checkmark.shield.fill")
+                                .font(.system(size: 12))
+                                .foregroundStyle(Color.vmCalm)
+                            Text("Good to send")
+                                .font(.vmCallout)
+                                .foregroundStyle(Color.vmCalm)
+                        } else {
+                            Text(viewModel.dominantTone.emoji)
+                                .font(.system(size: 14))
+                            
+                            Text(viewModel.dominantTone.rawValue)
+                                .font(.vmCallout)
+                                .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
+                            
+                            Text("• Risk \(Int(viewModel.riskScore))")
+                                .font(.vmCallout)
+                                .foregroundStyle(Color.vmTextSecondary)
+                        }
+                    }
                 }
             }
             
             Spacer()
             
-            if viewModel.riskScore >= 40, let rephrase = viewModel.suggestedRephrase {
+            if !viewModel.isAnalysing && viewModel.riskScore >= 40, let rephrase = viewModel.suggestedRephrase {
                 Button {
                     viewModel.acceptRephrase()
                 } label: {

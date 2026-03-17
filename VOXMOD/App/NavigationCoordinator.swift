@@ -33,6 +33,7 @@ final class NavigationCoordinator: ObservableObject {
     }
     
     @Published var selectedTab: Tab = .dashboard
+    @Published var isTabBarVisible: Bool = true
     @Published var dashboardPath = NavigationPath()
     @Published var composerPath = NavigationPath()
     
