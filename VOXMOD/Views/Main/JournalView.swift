@@ -3,218 +3,233 @@
 
 import SwiftUI
 
-/// Shows a timeline of tone events with daily summaries,
-/// replacing the previous placeholder.
 struct JournalView: View {
-    
-    @EnvironmentObject var coordinator: NavigationCoordinator
-    @State private var events: [StorageService.ToneEvent] = []
+    @StateObject private var viewModel = JournalViewModel()
+    @FocusState private var isFocused: Bool
     @State private var animateIn = false
+    
+    // For the history sheet
+    @State private var showHistory = false
+    @State private var pastEvents: [StorageService.ToneEvent] = []
     
     var body: some View {
         ZStack {
             Color.vmBackground.ignoresSafeArea()
             
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(spacing: 0) {
                 // Header
                 journalHeader
                 
-                if events.isEmpty {
-                    emptyState
-                } else {
-                    ScrollView(showsIndicators: false) {
-                        LazyVStack(spacing: VMSpacing.md) {
-                            let groups = groupedEvents
-                            ForEach(0..<groups.count, id: \.self) { index in
-                                let group = groups[index]
-                                Section {
-                                    ForEach(group.value) { event in
-                                        eventRow(event)
-                                    }
-                                } header: {
-                                    Text(group.key)
-                                        .font(.vmCaptionSmall)
-                                        .foregroundStyle(Color.vmTextTertiary)
-                                        .tracking(1.0)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.top, VMSpacing.lg)
-                                }
-                            }
-                            
-                            Spacer(minLength: 100)
-                        }
-                        .padding(.horizontal, VMSpacing.xl)
-                        .padding(.top, VMSpacing.lg)
-                    }
+                // Text Editor
+                journalEditor
+                
+                // Bottom Analysis Bar
+                if !viewModel.text.isEmpty {
+                    analysisBar
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
         }
         .onAppear {
-            events = StorageService.shared.getAllEvents()
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2)) {
+            pastEvents = StorageService.shared.getAllEvents()
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
                 animateIn = true
             }
+        }
+        .sheet(isPresented: $showHistory) {
+            historySheet
         }
     }
     
     // MARK: - Header
     
     private var journalHeader: some View {
-        VStack(alignment: .leading, spacing: VMSpacing.xs) {
-            HStack(spacing: VMSpacing.sm) {
-                Image(systemName: "book.fill")
-                    .font(.system(size: 16))
-                    .foregroundStyle(Color.vmIndigo)
-                
-                Text("JOURNAL")
-                    .font(.vmCallout)
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Journal")
+                    .font(.vmTitle)
                     .foregroundStyle(.white)
-                    .tracking(2)
+                
+                Text(Date(), style: .date)
+                    .font(.vmCallout)
+                    .foregroundStyle(Color.vmTextSecondary)
             }
             
-            Text("Tone Reflection Log")
-                .font(.vmTitle)
-                .foregroundStyle(.white)
+            Spacer()
             
-            Text("Track your communication patterns over time.")
-                .font(.vmCallout)
-                .foregroundStyle(Color.vmTextSecondary)
+            // History Button
+            Button {
+                showHistory = true
+            } label: {
+                Image(systemName: "clock.arrow.circlepath")
+                    .font(.system(size: 18))
+                    .foregroundStyle(Color.vmTextSecondary)
+                    .padding(VMSpacing.md)
+                    .glassBackground(cornerRadius: VMRadius.md)
+            }
         }
         .padding(.horizontal, VMSpacing.xl)
         .padding(.top, VMSpacing.lg)
-        .padding(.bottom, VMSpacing.md)
+        .padding(.bottom, VMSpacing.lg)
+        .opacity(animateIn ? 1 : 0)
+        .offset(y: animateIn ? 0 : 20)
     }
     
-    // MARK: - Empty State
+    // MARK: - Editor
     
-    private var emptyState: some View {
-        VStack(spacing: VMSpacing.xl) {
-            Spacer()
-            
-            ZStack {
-                Circle()
-                    .fill(Color.vmIndigo.opacity(0.1))
-                    .frame(width: 100, height: 100)
-                
-                Image(systemName: "book.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(Color.vmIndigo.opacity(0.5))
+    private var journalEditor: some View {
+        ZStack(alignment: .topLeading) {
+            if viewModel.text.isEmpty {
+                Text("Write your thoughts down here. VOXMOD will gently analyze your tone as you reflect on your day...")
+                    .font(.system(size: 18, weight: .regular, design: .serif))
+                    .foregroundStyle(Color.vmTextTertiary)
+                    .padding(.horizontal, VMSpacing.xl)
+                    .padding(.top, VMSpacing.sm)
+                    .allowsHitTesting(false)
             }
             
-            VStack(spacing: VMSpacing.sm) {
-                Text("No Entries Yet")
-                    .font(.vmTitle2)
-                    .foregroundStyle(.white)
-                
-                Text("Your tone analysis events will appear here as you\nuse the Composer and Keyboard extension.")
-                    .font(.vmCallout)
-                    .foregroundStyle(Color.vmTextSecondary)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(3)
-            }
-            
-            GlowButton(title: "Start Composing", icon: "pencil.line") {
-                withAnimation {
-                    coordinator.selectedTab = .composer
-                }
-            }
-            .padding(.horizontal, VMSpacing.xxxl)
-            
-            Spacer()
-            Spacer()
+            TextEditor(text: $viewModel.text)
+                .font(.system(size: 18, weight: .regular, design: .serif))
+                .foregroundStyle(.white)
+                .tint(Color.vmIndigo)
+                .scrollContentBackground(.hidden)
+                .padding(.horizontal, VMSpacing.lg)
+                .focused($isFocused)
+                // Add padding to bottom so text doesn't hide behind analysis bar
+                .padding(.bottom, 120) 
         }
-        .padding()
+        .opacity(animateIn ? 1 : 0)
+        .animation(.easeIn(duration: 0.5), value: viewModel.text.isEmpty)
     }
     
-    // MARK: - Grouped Events
+    // MARK: - Analysis Bar
     
-    private var groupedEvents: [(key: String, value: [StorageService.ToneEvent])] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMM d"
-        
-        let grouped = Dictionary(grouping: events.reversed()) { event in
-            if Calendar.current.isDateInToday(event.timestamp) {
-                return "TODAY"
-            } else if Calendar.current.isDateInYesterday(event.timestamp) {
-                return "YESTERDAY"
-            } else {
-                return formatter.string(from: event.timestamp).uppercased()
-            }
-        }
-        
-        return grouped.sorted { $0.value.first?.timestamp ?? Date() > $1.value.first?.timestamp ?? Date() }
-    }
-    
-    // MARK: - Event Row
-    
-    private func eventRow(_ event: StorageService.ToneEvent) -> some View {
-        GlassCard(padding: VMSpacing.md) {
+    private var analysisBar: some View {
+        VStack(spacing: 0) {
+            // Gradient separator
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [Color.riskColor(for: viewModel.riskScore).opacity(0.3), Color.clear],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(height: 1)
+            
             HStack(spacing: VMSpacing.md) {
-                // Tone circle
-                ZStack {
-                    Circle()
-                        .fill(Color.riskColor(for: event.riskScore).opacity(0.15))
-                        .frame(width: 40, height: 40)
-                    
-                    Text(event.dominantTone.emoji)
-                        .font(.system(size: 18))
+                // Waveform
+                WaveformView(
+                    amplitudes: viewModel.waveformAmplitudes,
+                    color: Color.riskColor(for: viewModel.riskScore)
+                )
+                .frame(width: 60)
+                
+                if viewModel.isAnalysing {
+                    ProgressView()
+                        .tint(Color.vmIndigo)
+                        .scaleEffect(0.8)
+                } else {
+                    // Insights
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Current Tone")
+                            .font(.system(size: 10, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Color.vmTextTertiary)
+                            .tracking(1.0)
+                        
+                        HStack(spacing: 6) {
+                            Text(viewModel.dominantTone.emoji)
+                                .font(.system(size: 14))
+                            
+                            Text(viewModel.dominantTone.rawValue)
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                .foregroundStyle(Color.riskColor(for: viewModel.riskScore))
+                        }
+                    }
                 }
                 
-                VStack(alignment: .leading, spacing: VMSpacing.xs) {
-                    HStack {
-                        Text(event.dominantTone.rawValue)
-                            .font(.vmHeadline)
-                            .foregroundStyle(.white)
-                        
-                        Spacer()
-                        
-                        Text(event.timestamp, style: .time)
-                            .font(.vmCaptionSmall)
-                            .foregroundStyle(Color.vmTextTertiary)
-                    }
+                Spacer()
+                
+                // Done / Save
+                Button {
+                    isFocused = false
+                    // Real app might save the entry here
+                } label: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 32))
+                        .foregroundStyle(Color.vmIndigo)
+                }
+            }
+            .padding(.horizontal, VMSpacing.xl)
+            .padding(.vertical, VMSpacing.lg)
+            .background(
+                Rectangle()
+                    .fill(Color.vmSurface.opacity(0.95))
+                    .overlay(
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
+                            .environment(\.colorScheme, .dark)
+                    )
+                    .ignoresSafeArea(edges: .bottom)
+            )
+        }
+    }
+    
+    // MARK: - History Sheet
+    
+    private var historySheet: some View {
+        ZStack {
+            Color.vmBackground.ignoresSafeArea()
+            
+            VStack {
+                HStack {
+                    Text("Past Reflections")
+                        .font(.vmTitle2)
+                        .foregroundStyle(.white)
                     
-                    HStack(spacing: VMSpacing.sm) {
-                        // Risk badge
-                        HStack(spacing: VMSpacing.xs) {
-                            Circle()
-                                .fill(Color.riskColor(for: event.riskScore))
-                                .frame(width: 6, height: 6)
-                            
-                            Text("Risk \(Int(event.riskScore))")
-                                .font(.vmCaptionSmall)
-                                .foregroundStyle(Color.riskColor(for: event.riskScore))
-                        }
-                        .padding(.horizontal, VMSpacing.sm)
-                        .padding(.vertical, 2)
-                        .background(
-                            Capsule()
-                                .fill(Color.riskColor(for: event.riskScore).opacity(0.1))
-                        )
-                        
-                        // Regulated badge
-                        if event.wasRegulated {
-                            HStack(spacing: VMSpacing.xs) {
-                                Image(systemName: "checkmark.shield.fill")
-                                    .font(.system(size: 9))
-                                Text("Regulated")
-                                    .font(.vmCaptionSmall)
+                    Spacer()
+                    
+                    Button {
+                        showHistory = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color.vmTextSecondary)
+                    }
+                }
+                .padding()
+                
+                if pastEvents.isEmpty {
+                    Spacer()
+                    Text("No past journal entries.")
+                        .font(.vmCallout)
+                        .foregroundStyle(Color.vmTextSecondary)
+                    Spacer()
+                } else {
+                    List {
+                        ForEach(pastEvents) { event in
+                            HStack {
+                                Text(event.dominantTone.emoji)
+                                VStack(alignment: .leading) {
+                                    Text(event.dominantTone.rawValue)
+                                        .foregroundStyle(.white)
+                                    Text(event.timestamp, style: .date)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.vmTextSecondary)
+                                }
+                                Spacer()
+                                Text("Risk \(Int(event.riskScore))")
+                                    .foregroundStyle(Color.riskColor(for: event.riskScore))
                             }
-                            .foregroundStyle(Color.vmCalm)
-                            .padding(.horizontal, VMSpacing.sm)
-                            .padding(.vertical, 2)
-                            .background(
-                                Capsule()
-                                    .fill(Color.vmCalm.opacity(0.1))
-                            )
+                            .listRowBackground(Color.vmSurface)
                         }
                     }
+                    .scrollContentBackground(.hidden)
                 }
             }
         }
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     JournalView()

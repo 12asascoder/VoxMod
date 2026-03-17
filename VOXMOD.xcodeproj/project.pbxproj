@@ -10,6 +10,7 @@
 		08FD9A606CDE8C8F82D0AFF4 /* VOXMODKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 88277397A31A6EEC464659F3 /* VOXMODKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1580E2DAE73D7C443CA8D2AE /* ConversationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87AF55ADBD6A45F73774D776 /* ConversationDetailView.swift */; };
 		2A2762FFB634B61B7DC407C1 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534AD16E68B3EADC9C89AC9C /* JournalView.swift */; };
+		2A42B02DB5B23E7C524DCEAE /* JournalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5203D277C057DADF25161A /* JournalViewModel.swift */; };
 		3D22FF81C9AB8BDB12CB57DA /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E4D26E0FE854C2228638CD /* Conversation.swift */; };
 		46642B01F64E7493FEC9A333 /* ToneAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* ToneAnalysis.swift */; };
 		6B3B2BCFB267CB30118DAA55 /* ToneAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014 /* ToneAnalysisService.swift */; };
@@ -106,6 +107,7 @@
 		B10025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C10000 /* VOXMOD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOXMOD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA451CFE2D6F54134FBC93F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		EC5203D277C057DADF25161A /* JournalViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
 		EF111157717553D937D2803F /* KeyboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -230,6 +232,7 @@
 				B10016 /* DashboardViewModel.swift */,
 				B10017 /* OnboardingViewModel.swift */,
 				B10018 /* SettingsViewModel.swift */,
+				EC5203D277C057DADF25161A /* JournalViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				3D22FF81C9AB8BDB12CB57DA /* Conversation.swift in Sources */,
 				1580E2DAE73D7C443CA8D2AE /* ConversationDetailView.swift in Sources */,
 				2A2762FFB634B61B7DC407C1 /* JournalView.swift in Sources */,
+				2A42B02DB5B23E7C524DCEAE /* JournalViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
