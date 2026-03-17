@@ -7,10 +7,15 @@ struct KeyboardView: View {
     let actionHandler: (KeyboardAction) -> Void
     let textDocumentProxy: UITextDocumentProxy
     
+    // Shared settings access
+    private static let sharedDefaults = UserDefaults(suiteName: "group.com.spazorlabs.VOXMOD") ?? .standard
+    @AppStorage("analysisEnabled", store: sharedDefaults) var analysisEnabled: Bool = true
+    
     // Using a timer to poll text changes for analysis context
     @State private var currentText: String = ""
     @State private var riskScore: Double = 0
     @State private var suggestedRephrase: String? = nil
+    @State private var isAnalyzing: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -18,6 +23,8 @@ struct KeyboardView: View {
             AISmartBar(
                 riskScore: riskScore,
                 suggestedRephrase: suggestedRephrase,
+                isAnalyzing: isAnalyzing,
+                isIntegrated: analysisEnabled,
                 onRephrase: { rephrase in
                     actionHandler(.replaceText(rephrase))
                     riskScore = 0
@@ -31,32 +38,44 @@ struct KeyboardView: View {
         }
         .padding(8)
         .background(Color.vmBackground)
-        .onReceive(Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()) { _ in
+        .onReceive(Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()) { _ in
             pollText()
         }
     }
     
     private func pollText() {
+        guard analysisEnabled else {
+            riskScore = 0
+            suggestedRephrase = nil
+            return
+        }
+        
         // Fetch surrounding text from proxy
         let beforeContext = textDocumentProxy.documentContextBeforeInput ?? ""
         let afterContext = textDocumentProxy.documentContextAfterInput ?? ""
         let combined = beforeContext + afterContext
         
-        if combined != currentText {
+        // Only analyse if text actually changed and isn't empty
+        if !combined.isEmpty && combined != currentText {
             currentText = combined
-            // In a real app, this would call ToneAnalysisService
-            // For now, we simulate basic detection to ensure UI works
-            if combined.lowercased().contains("hate") || combined.lowercased().contains("stupid") {
-                withAnimation {
-                    riskScore = 80
-                    suggestedRephrase = "I strongly disagree with this approach."
-                }
-            } else {
-                withAnimation {
-                    riskScore = 0
-                    suggestedRephrase = nil
+            isAnalyzing = true
+            
+            Task {
+                let analysis = await ToneAnalysisService.shared.analyse(combined)
+                
+                await MainActor.run {
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                        self.riskScore = analysis.riskScore
+                        self.suggestedRephrase = analysis.suggestedRephrase
+                        self.isAnalyzing = false
+                    }
                 }
             }
+        } else if combined.isEmpty {
+            currentText = ""
+            riskScore = 0
+            suggestedRephrase = nil
+            isAnalyzing = false
         }
     }
 }
@@ -65,14 +84,25 @@ struct KeyboardView: View {
 struct AISmartBar: View {
     let riskScore: Double
     let suggestedRephrase: String?
+    let isAnalyzing: Bool
+    let isIntegrated: Bool
     let onRephrase: (String) -> Void
     
     var body: some View {
         HStack {
-            // Risk indicator
+            // Risk / Status indicator
             ZStack {
+                if isAnalyzing {
+                    Circle()
+                        .stroke(Color.vmIndigo.opacity(0.3), lineWidth: 2)
+                        .frame(width: 16, height: 16)
+                        .scaleEffect(1.5)
+                        .opacity(0)
+                        .animation(.easeOut(duration: 1).repeatForever(autoreverses: false), value: isAnalyzing)
+                }
+                
                 Circle()
-                    .fill(Color.riskColor(for: riskScore))
+                    .fill(isIntegrated ? Color.riskColor(for: riskScore) : Color.vmTextTertiary)
                     .frame(width: 8, height: 8)
                 
                 if riskScore > 50 {
@@ -84,34 +114,60 @@ struct AISmartBar: View {
                         .animation(.easeInOut(duration: 1).repeatForever(), value: riskScore)
                 }
             }
-            .padding(.trailing, 8)
+            .padding(.trailing, 4)
             
-            if riskScore > 50, let rephrase = suggestedRephrase {
+            // Status Text
+            if !isIntegrated {
+                Text("INTEGRATION PAUSED")
+                    .font(.system(size: 10, weight: .bold, design: .rounded))
+                    .foregroundColor(Color.vmTextTertiary)
+            } else if riskScore > 50, let rephrase = suggestedRephrase {
                 // Rephrase button
                 Button(action: {
                     onRephrase(rephrase)
                 }) {
-                    Text("Use: \"\(rephrase)\"")
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Color.vmCalm.opacity(0.2))
-                        .cornerRadius(12)
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 10))
+                        Text("Use: \"\(rephrase)\"")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .lineLimit(1)
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color.vmCalm.opacity(0.2))
+                    .cornerRadius(12)
                 }
             } else {
-                // Waveform placeholder when typing normally
-                WaveformView(barCount: 8, color: Color.vmIndigo, maxHeight: 16)
-                    .frame(width: 40)
+                // Listening status
+                HStack(spacing: 6) {
+                    Text(isAnalyzing ? "ANALYZING..." : "VOXMOD INTEGRATED")
+                        .font(.system(size: 10, weight: .bold, design: .rounded))
+                        .foregroundColor(isAnalyzing ? Color.vmIndigo : Color.vmCalm.opacity(0.8))
+                    
+                    if isAnalyzing {
+                        WaveformView(barCount: 6, color: Color.vmIndigo, maxHeight: 12)
+                            .frame(width: 30)
+                    } else {
+                        Image(systemName: "checkmark.shield.fill")
+                            .font(.system(size: 10))
+                            .foregroundColor(Color.vmCalm.opacity(0.8))
+                    }
+                }
             }
             
             Spacer()
+            
+            // App Branding
+            Text("VOXMOD")
+                .font(.system(size: 10, weight: .black, design: .rounded))
+                .foregroundColor(Color.vmIndigo.opacity(0.5))
         }
-        .frame(height: 36)
+        .frame(height: 38)
         .padding(.horizontal, 12)
         .background(Color.vmSurface)
-        .cornerRadius(18)
+        .cornerRadius(19)
     }
 }
 

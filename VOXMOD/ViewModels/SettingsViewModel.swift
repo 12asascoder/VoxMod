@@ -7,11 +7,13 @@ import SwiftUI
 @MainActor
 final class SettingsViewModel: ObservableObject {
     
-    @AppStorage("analysisEnabled")    var analysisEnabled: Bool = true
-    @AppStorage("hapticFeedback")     var hapticFeedback: Bool = true
-    @AppStorage("notificationsOn")    var notificationsEnabled: Bool = true
-    @AppStorage("analysisSensitivity") var sensitivity: Double = 50
-    @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = true
+    private static let sharedDefaults = UserDefaults(suiteName: "group.com.spazorlabs.VOXMOD") ?? .standard
+    
+    @AppStorage("analysisEnabled", store: sharedDefaults)    var analysisEnabled: Bool = true
+    @AppStorage("hapticFeedback", store: sharedDefaults)     var hapticFeedback: Bool = true
+    @AppStorage("notificationsOn", store: sharedDefaults)    var notificationsEnabled: Bool = true
+    @AppStorage("analysisSensitivity", store: sharedDefaults) var sensitivity: Double = 50
+    @AppStorage("hasCompletedOnboarding", store: sharedDefaults) var hasCompletedOnboarding: Bool = true
     
     /// Privacy trust badges displayed to the user.
     let privacyBadges: [(icon: String, title: String, subtitle: String)] = [
