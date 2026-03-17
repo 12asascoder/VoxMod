@@ -45,6 +45,13 @@ final class OnboardingViewModel: ObservableObject {
             subtitle: "Clarity replaces chaos.\nProductivity improves. Relationships heal.\nYour digital life, finally calm.",
             systemIcon: "leaf.fill",
             accentColor: .vmCalm
+        ),
+        Scene(
+            id: 3,
+            title: "Enable The Keyboard",
+            subtitle: "To analyze your tone live in WhatsApp,\nInstagram, and Messages, you must\nenable VOXMOD in your Settings.",
+            systemIcon: "keyboard.fill",
+            accentColor: .vmPurple
         )
     ]
     

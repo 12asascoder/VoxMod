@@ -7,6 +7,7 @@ import SwiftUI
 /// replacing the previous placeholder.
 struct JournalView: View {
     
+    @EnvironmentObject var coordinator: NavigationCoordinator
     @State private var events: [StorageService.ToneEvent] = []
     @State private var animateIn = false
     
@@ -112,7 +113,11 @@ struct JournalView: View {
                     .lineSpacing(3)
             }
             
-            GlowButton(title: "Start Composing", icon: "pencil.line") {}
+            GlowButton(title: "Start Composing", icon: "pencil.line") {
+                withAnimation {
+                    coordinator.selectedTab = .composer
+                }
+            }
             .padding(.horizontal, VMSpacing.xxxl)
             
             Spacer()

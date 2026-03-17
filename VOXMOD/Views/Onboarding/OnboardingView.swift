@@ -196,18 +196,39 @@ struct OnboardingView: View {
         }
     }
     
-    // MARK: - CTA Area
-    
     private var ctaArea: some View {
         VStack(spacing: VMSpacing.lg) {
             if viewModel.showCTA {
-                GlowButton(
-                    title: "Start Communicating Smarter",
-                    icon: "arrow.right"
-                ) {
-                    onComplete()
+                // If it's the keyboard scene, show the settings button
+                if viewModel.isLastScene {
+                    GlowButton(
+                        title: "Open Keyboard Settings",
+                        icon: "gearshape.fill"
+                    ) {
+                        if let url = URL(string: "App-Prefs:root=General&path=Keyboard") {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    
+                    Button {
+                        onComplete()
+                    } label: {
+                        Text("I've done this / Skip")
+                            .font(.vmCallout)
+                            .foregroundStyle(Color.vmTextTertiary)
+                            .underline()
+                    }
+                    .padding(.top, VMSpacing.sm)
+                } else {
+                    GlowButton(
+                        title: "Start Communicating Smarter",
+                        icon: "arrow.right"
+                    ) {
+                        onComplete()
+                    }
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
             } else {
                 GlowButton(
                     title: "Continue",
