@@ -22,7 +22,7 @@ struct ConnectedApp: Identifiable {
 }
 
 /// A simulated active conversation being monitored.
-struct ActiveConversation: Identifiable {
+struct ActiveConversation: Identifiable, Hashable {
     let id = UUID()
     let contactName: String
     let contactInitials: String
@@ -86,7 +86,7 @@ struct ActiveConversation: Identifiable {
 }
 
 /// A single message in a conversation thread.
-struct ChatMessage: Identifiable {
+struct ChatMessage: Identifiable, Hashable {
     let id = UUID()
     let text: String
     let isFromUser: Bool

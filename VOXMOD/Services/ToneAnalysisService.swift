@@ -69,23 +69,22 @@ final class ToneAnalysisService {
         // 4. Determine dominant tone
         let tone = dominantTone(for: combinedRisk)
         
-        // 5. Generate rephrase suggestion if risky
+        // 5. Generate explanation
+        let explanation = generateInsight(for: lowered, tone: tone)
+        
+        // 6. Generate rephrase suggestion if risky
         let rephrase = combinedRisk >= 40 ? suggestRephrase(for: text) : nil
         
-        // 6. Sentiment breakdown
+        // 7. Sentiment breakdown
         let breakdown = sentimentBreakdown(risk: combinedRisk)
         
-        // Log event silently to Storage if it crossed a notable threshold
-        // (Keyboard extension will fire this on continuous analysis)
-        if combinedRisk >= 50 {
-            // We assume false for `wasRegulated` initially. It can be updated by UI later if needed.
-            StorageService.shared.logEvent(riskScore: combinedRisk, tone: tone, wasRegulated: false)
-        }
-        
+        // Return analysis without automatically logging. 
+        // Logging should be handled intentionally by the caller when an action is taken.
         return ToneAnalysis(
             riskScore: combinedRisk,
             dominantTone: tone,
             suggestedRephrase: rephrase,
+            insightExplanation: explanation,
             sentimentBreakdown: breakdown
         )
     }
@@ -147,6 +146,33 @@ final class ToneAnalysisService {
         }
         
         return result
+    }
+    
+    private func generateInsight(for text: String, tone: Tone) -> String? {
+        if tone == .calm || tone == .neutral { return nil }
+        
+        let words = Set(text.components(separatedBy: .whitespacesAndNewlines))
+        let foundHostile = words.intersection(hostileKeywords)
+        let foundAggressive = words.intersection(aggressiveKeywords)
+        let foundAssertive = words.intersection(assertiveKeywords)
+        
+        var reasons: [String] = []
+        
+        if !foundHostile.isEmpty {
+            reasons.append("hostile phrasing like '\(foundHostile.first!)'")
+        }
+        if !foundAggressive.isEmpty {
+            reasons.append("aggressive wording such as '\(foundAggressive.first!)'")
+        }
+        if !foundAssertive.isEmpty && reasons.isEmpty {
+            reasons.append("highly assertive demands like '\(foundAssertive.first!)'")
+        }
+        
+        guard !reasons.isEmpty else {
+            return "The overall sentiment suggests a lack of cooperation which can be perceived as \(tone.rawValue.lowercased())."
+        }
+        
+        return "This message may be perceived as \(tone.rawValue.lowercased()) due to \(reasons.joined(separator: " and "))."
     }
     
     private func sentimentBreakdown(risk: Double) -> SentimentBreakdown {

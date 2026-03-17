@@ -14,6 +14,9 @@ struct ToneAnalysis: Equatable {
     /// AI-suggested calmer rephrase of the original text.
     let suggestedRephrase: String?
     
+    /// Explanation of why the text was analyzed this way (e.g. "Contains hostile keywords...")
+    let insightExplanation: String?
+    
     /// Breakdown of sentiment percentages.
     let sentimentBreakdown: SentimentBreakdown
     

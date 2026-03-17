@@ -152,6 +152,39 @@ struct InterventionAlertView: View {
             }
         }
         .opacity(showContent ? 1 : 0)
+        
+        // AI Insight Explanation
+        if let insight = viewModel.insightExplanation {
+            HStack(alignment: .top, spacing: VMSpacing.md) {
+                Image(systemName: "brain")
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.vmIndigo)
+                    .padding(.top, 2)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("AI INSIGHT")
+                        .font(.vmCaptionSmall)
+                        .foregroundStyle(Color.vmIndigo)
+                        .tracking(1.0)
+                    
+                    Text(insight)
+                        .font(.vmCallout)
+                        .foregroundStyle(Color.vmTextSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .padding(VMSpacing.md)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: VMRadius.md)
+                    .fill(Color.vmSurface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: VMRadius.md)
+                            .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                    )
+            )
+            .opacity(showContent ? 1 : 0)
+        }
     }
     
     // MARK: - Rephrase Section

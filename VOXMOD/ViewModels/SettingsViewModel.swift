@@ -50,12 +50,32 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func exportData() {
-        // In production: generate a JSON export of local analytics
+        let events = StorageService.shared.getAllEvents()
+        guard let data = try? JSONEncoder().encode(events) else { return }
+        
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("voxmod_export.json")
+        try? data.write(to: tempURL)
+        
         HapticService.shared.success()
+        
+        // Present iOS Share Sheet
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
+            
+            // For iPad popover compliance
+            if let popover = activityVC.popoverPresentationController {
+                popover.sourceView = rootVC.view
+                popover.sourceRect = CGRect(x: rootVC.view.bounds.midX, y: rootVC.view.bounds.midY, width: 0, height: 0)
+                popover.permittedArrowDirections = []
+            }
+            
+            rootVC.present(activityVC, animated: true)
+        }
     }
     
     func deleteAllData() {
-        // In production: wipe CoreData/SwiftData store
+        StorageService.shared.clearAll()
         HapticService.shared.warning()
     }
 }

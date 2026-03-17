@@ -153,7 +153,17 @@ struct JournalView: View {
                 // Done / Save
                 Button {
                     isFocused = false
-                    // Real app might save the entry here
+                    
+                    if viewModel.riskScore > 10 {
+                        StorageService.shared.logEvent(
+                            riskScore: viewModel.riskScore,
+                            tone: viewModel.dominantTone,
+                            wasRegulated: false // Reflection isn't inherently regulated unless we add a specific feature
+                        )
+                    }
+                    
+                    viewModel.text = ""
+                    HapticService.shared.success()
                 } label: {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 32))
@@ -161,7 +171,8 @@ struct JournalView: View {
                 }
             }
             .padding(.horizontal, VMSpacing.xl)
-            .padding(.vertical, VMSpacing.lg)
+            .padding(.top, VMSpacing.lg)
+            .padding(.bottom, VMSpacing.lg + 90) // Added clearance for the custom tab bar
             .background(
                 Rectangle()
                     .fill(Color.vmSurface.opacity(0.95))

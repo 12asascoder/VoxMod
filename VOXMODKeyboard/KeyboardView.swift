@@ -16,6 +16,7 @@ struct KeyboardView: View {
     @State private var riskScore: Double = 0
     @State private var suggestedRephrase: String? = nil
     @State private var isAnalyzing: Bool = false
+    @State private var dominantTone: Tone = .calm
     
     var body: some View {
         VStack(spacing: 0) {
@@ -26,9 +27,13 @@ struct KeyboardView: View {
                 isAnalyzing: isAnalyzing,
                 isIntegrated: analysisEnabled,
                 onRephrase: { rephrase in
+                    // Log the successful regulation via the keyboard
+                    StorageService.shared.logEvent(riskScore: riskScore, tone: dominantTone, wasRegulated: true)
+                    
                     actionHandler(.replaceText(rephrase))
                     riskScore = 0
                     suggestedRephrase = nil
+                    dominantTone = .calm
                 }
             )
             .padding(.bottom, 8)
@@ -67,6 +72,7 @@ struct KeyboardView: View {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                         self.riskScore = analysis.riskScore
                         self.suggestedRephrase = analysis.suggestedRephrase
+                        self.dominantTone = analysis.dominantTone
                         self.isAnalyzing = false
                     }
                 }
@@ -75,6 +81,7 @@ struct KeyboardView: View {
             currentText = ""
             riskScore = 0
             suggestedRephrase = nil
+            dominantTone = .calm
             isAnalyzing = false
         }
     }

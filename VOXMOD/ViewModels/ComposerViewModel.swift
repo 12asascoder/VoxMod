@@ -14,6 +14,7 @@ final class ComposerViewModel: ObservableObject {
     @Published var riskScore: Double = 0
     @Published var dominantTone: Tone = .calm
     @Published var suggestedRephrase: String? = nil
+    @Published var insightExplanation: String? = nil
     @Published var showIntervention: Bool = false
     @Published var isAnalysing: Bool = false
     @Published var showSendSuccess: Bool = false
@@ -60,6 +61,11 @@ final class ComposerViewModel: ObservableObject {
             return
         }
         
+        // Log the event explicitly
+        if riskScore > 10 {
+            StorageService.shared.logEvent(riskScore: riskScore, tone: dominantTone, wasRegulated: false)
+        }
+        
         // Safe to send
         let message = Message(
             text: messageText,
@@ -67,6 +73,7 @@ final class ComposerViewModel: ObservableObject {
                 riskScore: riskScore,
                 dominantTone: dominantTone,
                 suggestedRephrase: nil,
+                insightExplanation: insightExplanation,
                 sentimentBreakdown: .balanced
             )
         )
@@ -91,6 +98,9 @@ final class ComposerViewModel: ObservableObject {
         guard let rephrase = suggestedRephrase else { return }
         HapticService.shared.success()
         
+        // Log the successful intervention
+        StorageService.shared.logEvent(riskScore: riskScore, tone: dominantTone, wasRegulated: true)
+        
         withAnimation(.easeInOut(duration: 0.3)) {
             messageText = rephrase
             showIntervention = false
@@ -106,6 +116,10 @@ final class ComposerViewModel: ObservableObject {
     
     func forceSend() {
         showIntervention = false
+        
+        // Log the ignored intervention
+        StorageService.shared.logEvent(riskScore: riskScore, tone: dominantTone, wasRegulated: false)
+        
         let message = Message(text: messageText)
         sentMessages.append(message)
         resetComposer()
@@ -136,6 +150,7 @@ final class ComposerViewModel: ObservableObject {
                 self.riskScore = result.riskScore
                 self.dominantTone = result.dominantTone
                 self.suggestedRephrase = result.suggestedRephrase
+                self.insightExplanation = result.insightExplanation
                 self.isAnalysing = false
             }
             
@@ -163,5 +178,6 @@ final class ComposerViewModel: ObservableObject {
         riskScore = 0
         dominantTone = .calm
         suggestedRephrase = nil
+        insightExplanation = nil
     }
 }
