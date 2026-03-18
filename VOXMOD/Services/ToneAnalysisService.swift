@@ -39,25 +39,22 @@ final class ToneAnalysisService {
     /// full 3-layer on-device engine.
     func analyse(_ text: String) async -> ToneAnalysis {
         if let aiResult = await OpenAIService.shared.analyse(text: text) {
-            // Apply local toxicity override after AI result
-            let overriddenTone = applyToxicityOverride(
-                text: text,
-                aiTone: Tone(rawValue: aiResult.dominantTone.lowercased()) ?? .calm,
-                aiRisk: aiResult.riskScore
-            )
-            let finalRisk = max(aiResult.riskScore, overriddenTone.minimumRisk)
+            // Use live AI result directly without hard-coded post-processing
+            let tone = Tone(rawValue: aiResult.dominantTone.lowercased().capitalized) ?? .neutral
+            let risk = aiResult.riskScore
+            
             let result = ToneAnalysis(
-                riskScore: finalRisk,
-                dominantTone: overriddenTone,
+                riskScore: risk,
+                dominantTone: tone,
                 suggestedRephrase: aiResult.suggestedRephrase,
                 insightExplanation: aiResult.insightExplanation,
-                sentimentBreakdown: sentimentBreakdown(risk: finalRisk)
+                sentimentBreakdown: sentimentBreakdown(risk: risk)
             )
             logDebug(text: text, result: result)
             return result
         }
 
-        // Full on-device fallback
+        // Full on-device fallback (only if AI is unreachable)
         return await analyseOnDevice(text)
     }
 

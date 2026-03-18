@@ -25,6 +25,10 @@ final class SettingsViewModel: ObservableObject {
         didSet { Self.sharedDefaults.set(sensitivity, forKey: "analysisSensitivity") }
     }
 
+    @Published var nvidiaAPIKey: String {
+        didSet { Self.sharedDefaults.set(nvidiaAPIKey, forKey: "nvidiaAPIKey") }
+    }
+
     init() {
         let defaults      = Self.sharedDefaults
         self.analysisEnabled     = defaults.object(forKey: "analysisEnabled") as? Bool ?? true
@@ -33,6 +37,7 @@ final class SettingsViewModel: ObservableObject {
         self.sensitivity          = defaults.double(forKey: "analysisSensitivity") == 0
                                         ? 50
                                         : defaults.double(forKey: "analysisSensitivity")
+        self.nvidiaAPIKey          = defaults.string(forKey: "nvidiaAPIKey") ?? ""
     }
 
     /// Privacy trust badges displayed to the user.

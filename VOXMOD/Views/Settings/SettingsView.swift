@@ -24,6 +24,9 @@ struct SettingsView: View {
                     // Analysis settings
                     analysisSection
                     
+                    // AI Backend
+                    aiBackendSection
+                    
                     // Preferences
                     preferencesSection
                     
@@ -160,6 +163,55 @@ struct SettingsView: View {
                                 .font(.vmCaptionSmall)
                                 .foregroundStyle(Color.vmTextTertiary)
                         }
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - AI Backend
+    
+    private var aiBackendSection: some View {
+        VStack(alignment: .leading, spacing: VMSpacing.md) {
+            sectionHeader("AI Backend")
+            
+            GlassCard {
+                VStack(spacing: VMSpacing.lg) {
+                    HStack(spacing: VMSpacing.md) {
+                        Image(systemName: "cpu.fill")
+                            .font(.system(size: 18))
+                            .foregroundStyle(Color.vmIndigo)
+                            .frame(width: 24)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("NVIDIA API Key")
+                                .font(.vmCallout)
+                                .foregroundStyle(.white)
+                            
+                            Text("Qwen 3.5 122B for AI-powered tone analysis")
+                                .font(.vmCaptionSmall)
+                                .foregroundStyle(Color.vmTextSecondary)
+                        }
+                    }
+                    
+                    SecureField("Paste your API key...", text: $viewModel.nvidiaAPIKey)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 14, design: .monospaced))
+                        .foregroundStyle(.white)
+                        .padding(12)
+                        .background(Color.vmBackground.opacity(0.6))
+                        .cornerRadius(8)
+                    
+                    HStack(spacing: VMSpacing.sm) {
+                        Circle()
+                            .fill(viewModel.nvidiaAPIKey.isEmpty ? Color.vmWarning : Color.vmCalm)
+                            .frame(width: 6, height: 6)
+                        
+                        Text(viewModel.nvidiaAPIKey.isEmpty ? "Not configured — using on-device analysis" : "Key configured — AI analysis active")
+                            .font(.vmCaptionSmall)
+                            .foregroundStyle(Color.vmTextTertiary)
+                        
+                        Spacer()
                     }
                 }
             }

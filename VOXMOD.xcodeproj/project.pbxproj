@@ -48,6 +48,8 @@
 		A10027 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10001 /* OpenAIService.swift */; };
 		A10028 /* ToxicityLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* ToxicityLayer.swift */; };
 		A10029 /* ToxicityLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* ToxicityLayer.swift */; };
+		A10030 /* NVIDIAService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10002 /* NVIDIAService.swift */; };
+		A10031 /* NVIDIAService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10002 /* NVIDIAService.swift */; };
 		E69D9E0EF30B125B49E05A60 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF111157717553D937D2803F /* KeyboardViewController.swift */; };
 		F52E6454BEF9750BE98B527A /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* DesignSystem.swift */; };
 /* End PBXBuildFile section */
@@ -112,6 +114,7 @@
 		B10025 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C10000 /* VOXMOD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VOXMOD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C10001 /* OpenAIService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		C10002 /* NVIDIAService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NVIDIAService.swift; sourceTree = "<group>"; };
 		EA451CFE2D6F54134FBC93F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		EC5203D277C057DADF25161A /* JournalViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JournalViewModel.swift; sourceTree = "<group>"; };
 		EF111157717553D937D2803F /* KeyboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
@@ -228,6 +231,7 @@
 				B10030 /* ToxicityLayer.swift */,
 				04932B7DA5FDC89F287E754A /* StorageService.swift */,
 				C10001 /* OpenAIService.swift */,
+				C10002 /* NVIDIAService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -421,6 +425,7 @@
 				A10029 /* ToxicityLayer.swift in Sources */,
 				CA30ACAE58106C480869F55B /* StorageService.swift in Sources */,
 				A10027 /* OpenAIService.swift in Sources */,
+				A10031 /* NVIDIAService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,6 +464,7 @@
 				2A2762FFB634B61B7DC407C1 /* JournalView.swift in Sources */,
 				2A42B02DB5B23E7C524DCEAE /* JournalViewModel.swift in Sources */,
 				A10026 /* OpenAIService.swift in Sources */,
+				A10030 /* NVIDIAService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

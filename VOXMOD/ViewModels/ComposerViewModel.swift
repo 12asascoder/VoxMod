@@ -146,24 +146,18 @@ final class ComposerViewModel: ObservableObject {
 
             guard !Task.isCancelled else { return }
 
-            // Local toxicity safety net:
-            // If the engine still returns Calm/Neutral for a message with profanity,
-            // force the tone up to the correct level.
-            let safeTone  = enforceTone(result.dominantTone, for: text)
-            let safeRisk  = max(result.riskScore, safeTone.minimumRisk)
-
             withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
-                self.riskScore          = safeRisk
-                self.dominantTone       = safeTone
+                self.riskScore          = result.riskScore
+                self.dominantTone       = result.dominantTone
                 self.suggestedRephrase  = result.suggestedRephrase
                 self.insightExplanation = result.insightExplanation
                 self.isAnalysing        = false
             }
 
             // Haptic feedback on risk change
-            if safeRisk >= 70 {
+            if result.riskScore >= 70 {
                 HapticService.shared.alert()
-            } else if safeRisk >= 40 {
+            } else if result.riskScore >= 40 {
                 HapticService.shared.pulse()
             }
         }
@@ -187,14 +181,5 @@ final class ComposerViewModel: ObservableObject {
         insightExplanation = nil
     }
 
-    /// Enforces the calm gate: if the text contains profanity/insults, Calm or Neutral
-    /// are upgraded to Assertive minimum (or higher based on toxicity).
-    private func enforceTone(_ tone: Tone, for text: String) -> Tone {
-        guard tone == .calm || tone == .neutral else { return tone }
-        let toxicity = ToxicityLayer.shared.toxicityScore(for: text)
-        if toxicity >= 60 { return .aggressive }
-        if toxicity >= 20 { return .assertive }
-        if ToxicityLayer.shared.isAccusatory(text) { return .assertive }
-        return tone   // Calm/Neutral allowed — text truly safe
-    }
+
 }
