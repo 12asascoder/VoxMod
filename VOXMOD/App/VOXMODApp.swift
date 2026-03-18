@@ -7,7 +7,7 @@ import SwiftUI
 struct VOXMODApp: App {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @StateObject private var coordinator = NavigationCoordinator()
-    
+
     var body: some Scene {
         WindowGroup {
             Group {
@@ -23,6 +23,13 @@ struct VOXMODApp: App {
                 }
             }
             .preferredColorScheme(.dark)
+            .onReceive(NotificationCenter.default.publisher(for: .voxmodFullReset)) { _ in
+                // Full cold reset: navigate back to onboarding and clear coordinator state
+                coordinator.resetToRoot()
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    hasCompletedOnboarding = false
+                }
+            }
         }
     }
 }

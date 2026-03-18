@@ -48,9 +48,11 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) {
                 viewModel.deleteAllData()
+                // Notify the app entry-point to navigate back to onboarding
+                NotificationCenter.default.post(name: .voxmodFullReset, object: nil)
             }
         } message: {
-            Text("This will permanently remove all your communication analytics and insight history. This action cannot be undone.")
+            Text("This will erase all data including analytics, settings, and preferences, and reset the app to its initial state. This action cannot be undone.")
         }
     }
     
@@ -197,7 +199,7 @@ struct SettingsView: View {
     private var dataSection: some View {
         VStack(alignment: .leading, spacing: VMSpacing.md) {
             sectionHeader("Data")
-            
+
             GlassCard {
                 VStack(spacing: VMSpacing.lg) {
                     settingsButton(
@@ -208,24 +210,13 @@ struct SettingsView: View {
                     ) {
                         viewModel.exportData()
                     }
-                    
+
                     Divider().overlay(Color.white.opacity(0.06))
-                    
-                    settingsButton(
-                        icon: "arrow.counterclockwise",
-                        title: "Replay Onboarding",
-                        subtitle: "See the introduction again",
-                        color: .vmPurple
-                    ) {
-                        viewModel.resetOnboarding()
-                    }
-                    
-                    Divider().overlay(Color.white.opacity(0.06))
-                    
+
                     settingsButton(
                         icon: "trash.fill",
                         title: "Delete All Data",
-                        subtitle: "Permanently erase analytics",
+                        subtitle: "Permanently erase all data and reset app",
                         color: .vmDanger
                     ) {
                         showDeleteConfirmation = true

@@ -78,3 +78,19 @@ struct SentimentBreakdown: Equatable {
         neutral: 0.3
     )
 }
+
+// MARK: - Tone Minimum Risk
+
+extension Tone {
+    /// Minimum risk score that should accompany this tone level.
+    /// Used by tone enforcement logic across ViewModels and Services.
+    var minimumRisk: Double {
+        switch self {
+        case .calm:       return 0
+        case .neutral:    return 15
+        case .assertive:  return 35
+        case .aggressive: return 55
+        case .hostile:    return 75
+        }
+    }
+}

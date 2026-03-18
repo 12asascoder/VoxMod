@@ -46,6 +46,8 @@
 		CA30ACAE58106C480869F55B /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04932B7DA5FDC89F287E754A /* StorageService.swift */; };
 		A10026 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10001 /* OpenAIService.swift */; };
 		A10027 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10001 /* OpenAIService.swift */; };
+		A10028 /* ToxicityLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* ToxicityLayer.swift */; };
+		A10029 /* ToxicityLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* ToxicityLayer.swift */; };
 		E69D9E0EF30B125B49E05A60 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF111157717553D937D2803F /* KeyboardViewController.swift */; };
 		F52E6454BEF9750BE98B527A /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* DesignSystem.swift */; };
 /* End PBXBuildFile section */
@@ -96,6 +98,7 @@
 		B10012 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		B10013 /* InsightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightService.swift; sourceTree = "<group>"; };
 		B10014 /* ToneAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneAnalysisService.swift; sourceTree = "<group>"; };
+		B10030 /* ToxicityLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToxicityLayer.swift; sourceTree = "<group>"; };
 		B10015 /* ComposerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerViewModel.swift; sourceTree = "<group>"; };
 		B10016 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		B10017 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -222,6 +225,7 @@
 				B10012 /* HapticService.swift */,
 				B10013 /* InsightService.swift */,
 				B10014 /* ToneAnalysisService.swift */,
+				B10030 /* ToxicityLayer.swift */,
 				04932B7DA5FDC89F287E754A /* StorageService.swift */,
 				C10001 /* OpenAIService.swift */,
 			);
@@ -414,6 +418,7 @@
 				BEE289D5C242CF9795ADA03B /* WaveformView.swift in Sources */,
 				46642B01F64E7493FEC9A333 /* ToneAnalysis.swift in Sources */,
 				6B3B2BCFB267CB30118DAA55 /* ToneAnalysisService.swift in Sources */,
+				A10029 /* ToxicityLayer.swift in Sources */,
 				CA30ACAE58106C480869F55B /* StorageService.swift in Sources */,
 				A10027 /* OpenAIService.swift in Sources */,
 			);
@@ -437,6 +442,7 @@
 				A10012 /* HapticService.swift in Sources */,
 				A10013 /* InsightService.swift in Sources */,
 				A10014 /* ToneAnalysisService.swift in Sources */,
+				A10028 /* ToxicityLayer.swift in Sources */,
 				A10015 /* ComposerViewModel.swift in Sources */,
 				A10016 /* DashboardViewModel.swift in Sources */,
 				A10017 /* OnboardingViewModel.swift in Sources */,
