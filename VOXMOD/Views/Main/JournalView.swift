@@ -10,7 +10,7 @@ struct JournalView: View {
     
     // For the history sheet
     @State private var showHistory = false
-    @State private var pastEvents: [StorageService.ToneEvent] = []
+    @State private var pastEntries: [StorageService.JournalEntry] = []
     
     var body: some View {
         ZStack {
@@ -24,14 +24,17 @@ struct JournalView: View {
                 journalEditor
                 
                 // Bottom Analysis Bar
-                if !viewModel.text.isEmpty {
+                if viewModel.text != viewModel.savedEntry?.text && !viewModel.text.isEmpty {
                     analysisBar
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                } else if let entry = viewModel.savedEntry {
+                    insightCard(entry: entry)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
         }
         .onAppear {
-            pastEvents = StorageService.shared.getAllEvents()
+            pastEntries = StorageService.shared.getAllJournalEntries()
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
                 animateIn = true
             }
@@ -153,22 +156,19 @@ struct JournalView: View {
                 // Done / Save
                 Button {
                     isFocused = false
-                    
-                    if viewModel.riskScore > 10 {
-                        StorageService.shared.logEvent(
-                            riskScore: viewModel.riskScore,
-                            tone: viewModel.dominantTone,
-                            wasRegulated: false // Reflection isn't inherently regulated unless we add a specific feature
-                        )
-                    }
-                    
-                    viewModel.text = ""
-                    HapticService.shared.success()
+                    viewModel.saveDailyEntry()
                 } label: {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 32))
-                        .foregroundStyle(Color.vmIndigo)
+                    if viewModel.isSaving {
+                        ProgressView()
+                            .tint(Color.vmIndigo)
+                            .scaleEffect(1.2)
+                    } else {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 32))
+                            .foregroundStyle(Color.vmIndigo)
+                    }
                 }
+                .disabled(viewModel.isSaving)
             }
             .padding(.horizontal, VMSpacing.xl)
             .padding(.top, VMSpacing.lg)
@@ -184,6 +184,42 @@ struct JournalView: View {
                     .ignoresSafeArea(edges: .bottom)
             )
         }
+    }
+    
+    // MARK: - Insight Card
+    
+    private func insightCard(entry: StorageService.JournalEntry) -> some View {
+        GlassCard {
+            VStack(alignment: .leading, spacing: VMSpacing.md) {
+                HStack {
+                    Image(systemName: "sparkles")
+                        .foregroundStyle(Color.vmIndigo)
+                    
+                    Text("Tomorrow's Insight")
+                        .font(.vmCallout)
+                        .foregroundStyle(.white)
+                    
+                    Spacer()
+                    
+                    Text(entry.tone.emoji)
+                        .font(.system(size: 16))
+                }
+                
+                if let insight = entry.insight, !insight.isEmpty {
+                    Text(insight)
+                        .font(.system(size: 16, weight: .regular, design: .serif))
+                        .foregroundStyle(Color.vmTextSecondary)
+                        .lineSpacing(4)
+                } else {
+                    Text("Take a deep breath and rest well. Tomorrow is a new day.")
+                        .font(.system(size: 16, weight: .regular, design: .serif))
+                        .foregroundStyle(Color.vmTextSecondary)
+                }
+            }
+        }
+        .padding(.horizontal, VMSpacing.xl)
+        .padding(.top, VMSpacing.md)
+        .padding(.bottom, VMSpacing.lg + 90) // clearance for tab bar
     }
     
     // MARK: - History Sheet
@@ -210,7 +246,7 @@ struct JournalView: View {
                 }
                 .padding()
                 
-                if pastEvents.isEmpty {
+                if pastEntries.isEmpty {
                     Spacer()
                     Text("No past journal entries.")
                         .font(.vmCallout)
@@ -218,20 +254,36 @@ struct JournalView: View {
                     Spacer()
                 } else {
                     List {
-                        ForEach(pastEvents) { event in
-                            HStack {
-                                Text(event.dominantTone.emoji)
-                                VStack(alignment: .leading) {
-                                    Text(event.dominantTone.rawValue)
-                                        .foregroundStyle(.white)
-                                    Text(event.timestamp, style: .date)
+                        ForEach(pastEntries) { entry in
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack {
+                                    Text(entry.tone.emoji)
+                                    Text(entry.date, style: .date)
                                         .font(.caption)
                                         .foregroundStyle(Color.vmTextSecondary)
+                                    Spacer()
+                                    Text(entry.tone.rawValue.capitalized)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.riskColor(for: entry.riskScore))
                                 }
-                                Spacer()
-                                Text("Risk \(Int(event.riskScore))")
-                                    .foregroundStyle(Color.riskColor(for: event.riskScore))
+                                
+                                Text(entry.text)
+                                    .font(.system(size: 14, design: .serif))
+                                    .foregroundStyle(.white)
+                                    .lineLimit(3)
+                                
+                                if let insight = entry.insight, !insight.isEmpty {
+                                    HStack(alignment: .top) {
+                                        Image(systemName: "sparkles")
+                                            .font(.system(size: 12))
+                                            .foregroundStyle(Color.vmIndigo)
+                                        Text(insight)
+                                            .font(.system(size: 14))
+                                            .foregroundStyle(Color.vmTextTertiary)
+                                    }
+                                }
                             }
+                            .padding(.vertical, 8)
                             .listRowBackground(Color.vmSurface)
                         }
                     }

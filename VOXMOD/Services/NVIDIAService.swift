@@ -124,6 +124,66 @@ final class NVIDIAService {
             return nil
         }
     }
+    
+    /// Generates a personalized daily insight based on the user's journal entry.
+    /// Returns a 1-2 sentence actionable reflection or encouragement.
+    func generateDailyInsight(text: String) async -> String? {
+        guard !apiKey.contains("NVIDIA_API_KEY_HERE"),
+              !apiKey.isEmpty else {
+            return "Take a moment to breathe. Tomorrow is a new day with new opportunities."
+        }
+
+        let systemPrompt = """
+        You are an empathetic, insightful journaling AI.
+        The user has written a reflection of their day.
+        
+        Your task is to provide a short, highly personalized, and actionable insight (1-2 sentences maximum).
+        The goal is to help them grow and make tomorrow better than today.
+        If they had a bad day, offer gentle perspective. If they had a good day, reinforce the positive behavior.
+        
+        Write ONLY the insight. Do not use quotes, json, or markdown. Speak directly to the user (e.g. "Try to...").
+        """
+
+        let payload: [String: Any] = [
+            "model": model,
+            "messages": [
+                ["role": "system", "content": systemPrompt],
+                ["role": "user", "content": text]
+            ],
+            "max_tokens": 150,
+            "temperature": 0.4,
+            "top_p": 0.9,
+            "stream": false
+        ]
+
+        var request = URLRequest(url: URL(string: endpoint)!)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 20
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+            let (data, httpResponse) = try await URLSession.shared.data(for: request)
+
+            if let http = httpResponse as? HTTPURLResponse, http.statusCode != 200 {
+                return nil
+            }
+
+            let apiResponse = try JSONDecoder().decode(NVIDIAChatResponse.self, from: data)
+            var content = apiResponse.choices.first?.message.content?.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            // Trim any think tags if present
+            if let c = content, let endThink = c.range(of: "</think>") {
+                content = String(c[endThink.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            
+            return content
+        } catch {
+            print("[VOXMOD] Insight Generation Error: \(error)")
+            return nil
+        }
+    }
 
     // MARK: - JSON Extraction
 
@@ -135,7 +195,7 @@ final class NVIDIAService {
         var text = raw
 
         // Remove <think>...</think> blocks (Qwen thinking output)
-        if let thinkRange = text.range(of: "<think>"),
+        if text.contains("<think>"),
            let endThink = text.range(of: "</think>") {
             text = String(text[endThink.upperBound...])
         }

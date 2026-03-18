@@ -15,6 +15,7 @@ final class StorageService {
     private let suiteName = "group.com.spazorlabs.VOXMOD"
 
     private let eventsKey = "com.voxmod.events"
+    private let journalEntriesKey = "com.voxmod.journalEntries"
 
     private init() {}
 
@@ -29,6 +30,19 @@ final class StorageService {
 
         var dominantTone: Tone {
             Tone(rawValue: dominantToneRaw) ?? .calm
+        }
+    }
+    
+    struct JournalEntry: Codable, Identifiable {
+        let id: UUID
+        let date: Date        // Always stored at the start of the day for easy grouping
+        let text: String
+        let insight: String?
+        let toneRawValue: String
+        let riskScore: Double
+        
+        var tone: Tone {
+            Tone(rawValue: toneRawValue) ?? .neutral
         }
     }
 
@@ -61,6 +75,40 @@ final class StorageService {
     /// Delete only the analytics events.
     func clearAll() {
         defaults.removeObject(forKey: eventsKey)
+        defaults.removeObject(forKey: journalEntriesKey)
+    }
+
+    // MARK: - Journal API
+
+    /// Save or overwrite a journal entry for its specific day.
+    func saveJournalEntry(_ entry: JournalEntry) {
+        var allEntries = getAllJournalEntries()
+        // If an entry for the same day exists, replace it
+        if let index = allEntries.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: entry.date) }) {
+            allEntries[index] = entry
+        } else {
+            allEntries.append(entry)
+        }
+        
+        if let data = try? JSONEncoder().encode(allEntries) {
+            defaults.set(data, forKey: journalEntriesKey)
+        }
+    }
+    
+    /// Get the journal entry for a specific date (ignores time).
+    func getJournalEntry(for date: Date) -> JournalEntry? {
+        // Fast-path lookup
+        let all = getAllJournalEntries()
+        return all.first(where: { Calendar.current.isDate($0.date, inSameDayAs: date) })
+    }
+    
+    /// Get all historical journal entries sorted newest to oldest.
+    func getAllJournalEntries() -> [JournalEntry] {
+        guard let data = defaults.data(forKey: journalEntriesKey),
+              let entries = try? JSONDecoder().decode([JournalEntry].self, from: data) else {
+            return []
+        }
+        return entries.sorted { $0.date > $1.date }
     }
 
     /// Full cold reset — wipes ALL persisted app data.
@@ -82,6 +130,7 @@ final class StorageService {
         // 2. Remove individual keys as a belt-and-suspenders fallback
         let allKeys: [String] = [
             eventsKey,
+            journalEntriesKey,
             "analysisEnabled",
             "hapticFeedback",
             "notificationsOn",

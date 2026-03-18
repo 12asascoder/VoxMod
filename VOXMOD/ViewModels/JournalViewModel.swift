@@ -11,6 +11,9 @@ final class JournalViewModel: ObservableObject {
     @Published var dominantTone: Tone = .neutral
     @Published var insightExplanation: String? = nil
     @Published var isAnalysing: Bool = false
+    
+    @Published var savedEntry: StorageService.JournalEntry?
+    @Published var isSaving: Bool = false
 
     // Waveform amplitudes for visual feedback
     @Published var waveformAmplitudes: [CGFloat] = Array(repeating: 0.1, count: 8)
@@ -20,7 +23,16 @@ final class JournalViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        // Debounce text input for tone analysis
+        // Load today's persistent entry if it exists
+        if let todayEntry = StorageService.shared.getJournalEntry(for: Date()) {
+            self.savedEntry = todayEntry
+            self.text = todayEntry.text
+            self.dominantTone = todayEntry.tone
+            self.riskScore = todayEntry.riskScore
+            self.insightExplanation = todayEntry.insight
+        }
+
+        // Debounce text input for live tone analysis
         $text
             .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             .removeDuplicates()
@@ -66,6 +78,43 @@ final class JournalViewModel: ObservableObject {
                 self.dominantTone       = journalTone
                 self.insightExplanation = result.insightExplanation
                 self.isAnalysing        = false
+            }
+        }
+    }
+    
+    // MARK: - Saving
+    
+    func saveDailyEntry() {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        
+        isSaving = true
+        HapticService.shared.tap()
+        
+        Task {
+            // 1. Generate the personalized growth insight for tomorrow via AI
+            let aiInsight = await NVIDIAService.shared.generateDailyInsight(text: trimmed)
+            
+            // 2. Create and persist the entry
+            let entryToSave = StorageService.JournalEntry(
+                id: savedEntry?.id ?? UUID(),
+                date: savedEntry?.date ?? Date(),
+                text: trimmed,
+                insight: aiInsight,
+                toneRawValue: dominantTone.rawValue,
+                riskScore: riskScore
+            )
+            
+            StorageService.shared.saveJournalEntry(entryToSave)
+            
+            // 3. Update UI state
+            await MainActor.run {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    self.savedEntry = entryToSave
+                    self.insightExplanation = aiInsight
+                    self.isSaving = false
+                }
+                HapticService.shared.success()
             }
         }
     }
