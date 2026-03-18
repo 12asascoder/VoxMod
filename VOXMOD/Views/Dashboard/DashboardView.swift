@@ -5,6 +5,7 @@ import SwiftUI
 
 struct DashboardView: View {
     
+    @EnvironmentObject var coordinator: NavigationCoordinator
     @StateObject private var viewModel = DashboardViewModel()
     @State private var animateCards = false
     
@@ -26,6 +27,10 @@ struct DashboardView: View {
             
             ScrollView(showsIndicators: false) {
                 VStack(spacing: VMSpacing.xxl) {
+                    
+                    // Journal Widget
+                    journalReminderWidget
+                        .padding(.top, VMSpacing.md)
                     
                     // Welcome & Hero harmony score
                     heroSection
@@ -66,6 +71,58 @@ struct DashboardView: View {
                 animateCards = true
             }
         }
+    }
+    
+    // MARK: - Journal Reminder Widget
+    
+    private var journalReminderWidget: some View {
+        let hasJournaled = StorageService.shared.getJournalEntry(for: Date()) != nil
+        
+        return GlassCard(padding: 0) {
+            HStack(spacing: VMSpacing.md) {
+                ZStack {
+                    Circle()
+                        .fill(hasJournaled ? Color.vmCalm.opacity(0.15) : Color.vmIndigo.opacity(0.15))
+                        .frame(width: 48, height: 48)
+                    
+                    Image(systemName: hasJournaled ? "checkmark.circle.fill" : "book.closed.fill")
+                        .font(.system(size: 24))
+                        .foregroundStyle(hasJournaled ? Color.vmCalm : Color.vmIndigo)
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(hasJournaled ? "Daily Reflection Complete" : "Time to Reflect")
+                        .font(.vmHeadline)
+                        .foregroundStyle(.white)
+                    
+                    Text(hasJournaled ? "Great job checking in today." : "You haven't journaled today yet.")
+                        .font(.vmCaption)
+                        .foregroundStyle(Color.vmTextSecondary)
+                }
+                
+                Spacer()
+                
+                if !hasJournaled {
+                    Button {
+                        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                            coordinator.selectedTab = .journal
+                        }
+                    } label: {
+                        Text("Start")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.vmIndigo)
+                            .clipShape(Capsule())
+                    }
+                }
+            }
+            .padding(VMSpacing.md)
+        }
+        .padding(.horizontal, VMSpacing.xl)
+        .opacity(animateCards ? 1 : 0)
+        .offset(y: animateCards ? 0 : 10)
     }
     
     // MARK: - Hero Section

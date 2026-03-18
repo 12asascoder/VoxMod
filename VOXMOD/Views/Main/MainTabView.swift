@@ -34,6 +34,23 @@ struct MainTabView: View {
         .onAppear {
             // Hide default tab bar
             UITabBar.appearance().isHidden = true
+            checkDailyJournal()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            checkDailyJournal()
+        }
+    }
+    
+    // MARK: - Daily Enforcement
+    
+    private func checkDailyJournal() {
+        if StorageService.shared.getJournalEntry(for: Date()) == nil {
+            // If they haven't journaled today, auto-route them there
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                    coordinator.selectedTab = .journal
+                }
+            }
         }
     }
     

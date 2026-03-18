@@ -20,6 +20,17 @@ struct JournalView: View {
                 // Header
                 journalHeader
                 
+                // sticky requirement banner
+                if viewModel.savedEntry == nil {
+                    Text("Daily Reflection Required")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(Color.black)
+                        .padding(.vertical, 6)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.vmCalm)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+                
                 // Text Editor
                 journalEditor
                 
@@ -253,41 +264,53 @@ struct JournalView: View {
                         .foregroundStyle(Color.vmTextSecondary)
                     Spacer()
                 } else {
-                    List {
-                        ForEach(pastEntries) { entry in
-                            VStack(alignment: .leading, spacing: 12) {
-                                HStack {
-                                    Text(entry.tone.emoji)
-                                    Text(entry.date, style: .date)
-                                        .font(.caption)
-                                        .foregroundStyle(Color.vmTextSecondary)
-                                    Spacer()
-                                    Text(entry.tone.rawValue.capitalized)
-                                        .font(.caption)
-                                        .foregroundStyle(Color.riskColor(for: entry.riskScore))
-                                }
-                                
-                                Text(entry.text)
-                                    .font(.system(size: 14, design: .serif))
-                                    .foregroundStyle(.white)
-                                    .lineLimit(3)
-                                
-                                if let insight = entry.insight, !insight.isEmpty {
-                                    HStack(alignment: .top) {
-                                        Image(systemName: "sparkles")
-                                            .font(.system(size: 12))
-                                            .foregroundStyle(Color.vmIndigo)
-                                        Text(insight)
-                                            .font(.system(size: 14))
-                                            .foregroundStyle(Color.vmTextTertiary)
+                    ScrollView(showsIndicators: false) {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: VMSpacing.md) {
+                            ForEach(pastEntries) { entry in
+                                GlassCard {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        HStack {
+                                            Text(entry.tone.emoji)
+                                                .font(.system(size: 20))
+                                            Spacer()
+                                            Text(entry.tone.rawValue.capitalized)
+                                                .font(.system(size: 10, weight: .bold))
+                                                .foregroundStyle(Color.riskColor(for: entry.riskScore))
+                                        }
+                                        
+                                        Text(entry.date, style: .date)
+                                            .font(.system(size: 10, weight: .semibold))
+                                            .foregroundStyle(Color.vmTextSecondary)
+                                        
+                                        Text(entry.text)
+                                            .font(.system(size: 12, design: .serif))
+                                            .foregroundStyle(.white)
+                                            .lineLimit(4)
+                                        
+                                        Spacer()
+                                        
+                                        if let insight = entry.insight, !insight.isEmpty {
+                                            HStack(alignment: .top, spacing: 4) {
+                                                Image(systemName: "sparkles")
+                                                    .font(.system(size: 10))
+                                                    .foregroundStyle(Color.vmIndigo)
+                                                Text(insight)
+                                                    .font(.system(size: 10))
+                                                    .foregroundStyle(Color.vmTextTertiary)
+                                                    .lineLimit(2)
+                                            }
+                                            .padding(.top, 4)
+                                        }
                                     }
+                                    .padding(VMSpacing.sm)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                 }
+                                .frame(height: 180)
                             }
-                            .padding(.vertical, 8)
-                            .listRowBackground(Color.vmSurface)
                         }
+                        .padding(.horizontal)
+                        .padding(.bottom, 40)
                     }
-                    .scrollContentBackground(.hidden)
                 }
             }
         }
